@@ -65,6 +65,10 @@ def my_form():
 def my_form_post():
     text = request.form['text']
     weighted_embedding = get_weighted_embedding(text)
+    print(data.shape)
+    print(weighted_embedding)
+    data2 = pd.concat(data, weighted_embedding)
+    print(data2.shape)
     return render_template('my-form.html', df_html=weighted_embedding)
 
 
