@@ -58,7 +58,9 @@ def get_weighted_embedding(token_list_long):
 @app.route('/')
 def my_form():
     df_html = data.describe().to_html()
-    return render_template('my-form.html', df_html=df_html)
+    return render_template('my-form.html',
+                            df_html=df_html,
+                            df_shape='1')
 
 
 @app.route('/', methods=['POST'])
@@ -70,7 +72,9 @@ def my_form_post():
     kmeans = KMeans(n_clusters = 20, random_state = 1111)
     clusters = kmeans.fit_predict(data2)
     data2['clusters'] = clusters
-    return render_template('my-form.html', df_html=data2.clusters.value_counts().to_html())
+    return render_template('my-form.html',
+                            df_html=data2.clusters.value_counts().to_html(),
+                            df_shape=data2.shape)
 
 
 if __name__ == '__main__':
