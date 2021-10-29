@@ -64,11 +64,12 @@ def my_form():
 def my_form_post():
     text = request.form['text']
     weighted_embedding = get_weighted_embedding(text)
-    print(data.shape)
-    print(weighted_embedding)
     data2 = pd.concat([data, weighted_embedding])
-    print(data2.shape)
-    return render_template('my-form.html', df_html=pd.DataFrame(final).to_html())
+    # CLUSTERING
+    kmeans = KMeans(n_clusters = 20, random_state = 1111)
+    clusters = kmeans.fit_predict(data2)
+    data2['clusters'] = clusters
+    return render_template('my-form.html', df_html=data2.clusters.value_counts().to_html())
 
 
 if __name__ == '__main__':
