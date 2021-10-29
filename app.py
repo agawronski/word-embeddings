@@ -51,7 +51,8 @@ def get_weighted_embedding(token_list_long):
     embeddings = sentence_model.encode(token_counts.index, show_progress_bar=False)
     weighted_embed = np.dot(np.diag(token_counts['weight']), embeddings)
     final = weighted_embed.sum(axis=0)
-    return final.to_html()
+    final2 =  pd.DataFrame(final)
+    return final2.to_html()
 
 
 @app.route('/')
