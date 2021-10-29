@@ -50,7 +50,7 @@ def get_weighted_embedding(token_list_long):
     token_counts['weight'] = token_counts/token_counts.sum()
     embeddings = sentence_model.encode(token_counts.index, show_progress_bar=False)
     weighted_embed = np.dot(np.diag(token_counts['weight']), embeddings)
-    final = weighted_embed.sum(axis=0)
+    final = pd.DataFrame(weighted_embed.sum(axis=0))
     return final
 
 
