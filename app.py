@@ -51,7 +51,7 @@ def get_weighted_embedding(token_list_long):
     embeddings = sentence_model.encode(token_counts.index, show_progress_bar=False)
     weighted_embed = np.dot(np.diag(token_counts['weight']), embeddings)
     final = weighted_embed.sum(axis=0)
-    return final
+    return final.to_html()
 
 
 @app.route('/')
@@ -64,7 +64,7 @@ def my_form():
 def my_form_post():
     text = request.form['text']
     weighted_embedding = get_weighted_embedding(text)
-    return weighted_embedding
+    return render_template(weighted_embedding)
 
 
 if __name__ == '__main__':
