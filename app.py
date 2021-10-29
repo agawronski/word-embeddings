@@ -30,7 +30,7 @@ app = Flask(__name__)
 data = None
 
 if data is None:
-    data = pd.read_csv('data/20211024_main_article_dataframe.csv')
+    data = pd.read_csv('https://word-emeddings.s3.us-west-2.amazonaws.com/20211020_weighted_embeddings_saved_FULL.csv')
 
 def get_weighted_embedding(token_list_long):
     text_token = word_tokenize(text_from_user)
