@@ -30,8 +30,8 @@ app = Flask(__name__)
 
 data = None
 
-# if data is None:
-#     data = pd.read_csv('https://word-emeddings.s3.us-west-2.amazonaws.com/20211020_weighted_embeddings_saved_FULL.csv')
+if data is None:
+    data = pd.read_csv('https://word-emeddings.s3.us-west-2.amazonaws.com/20211020_weighted_embeddings_saved_FULL.csv')
 
 def strip_punctuation_stopwords(token_list):
     return [word.lower() for word in token_list \
