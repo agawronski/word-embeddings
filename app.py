@@ -12,6 +12,7 @@ from flask import Flask, request, render_template
 from nltk.probability import FreqDist
 from nltk.stem import LancasterStemmer
 from nltk.stem import PorterStemmer
+from sklearn.cluster import KMeans
 # from bs4 import BeautifulSoup
 import pandas as pd
 import numpy as np
