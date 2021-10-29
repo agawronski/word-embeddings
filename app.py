@@ -35,7 +35,7 @@ if data is None:
 
 
 def get_weighted_embedding(token_list_long):
-    text_token = word_tokenize(text_from_user)
+    text_token = word_tokenize(token_list_long)
     text_token_clean = strip_punctuation_stopwords(text_token)
     token_counts = FreqDist(text_token_clean)
     token_counts = pd.DataFrame(token_counts, index=[0]).T
