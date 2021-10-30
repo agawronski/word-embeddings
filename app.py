@@ -13,6 +13,7 @@ from nltk.probability import FreqDist
 from nltk.stem import LancasterStemmer
 from nltk.stem import PorterStemmer
 from sklearn.cluster import KMeans
+from scipy.spatial import distance_matrix
 # from bs4 import BeautifulSoup
 import pandas as pd
 import numpy as np
@@ -30,9 +31,14 @@ sentence_model = SentenceTransformer("all-mpnet-base-v2")
 app = Flask(__name__)
 
 data = None
+article_df = None
 
 if data is None:
     data = pd.read_csv('https://word-emeddings.s3.us-west-2.amazonaws.com/20211017_embeddings_saved_FULL.csv', index_col=0)
+
+if article_df is None:
+    article_df = pd.read_csv('https://word-emeddings.s3.us-west-2.amazonaws.com/20211024_main_article_dataframe.csv')
+
 
 def strip_punctuation_stopwords(token_list):
     return [word.lower() for word in token_list \
@@ -74,10 +80,20 @@ def my_form_post():
     data2 = pd.concat([data, weighted_embedding2])
     print(data2.shape, file=sys.stderr)
     # CLUSTERING
-    kmeans = KMeans(n_clusters = 20, random_state = 1111)
-    clusters = kmeans.fit_predict(data2)
-    data2['clusters'] = clusters
-    print(data2.clusters.value_counts(), file=sys.stderr) 
+    #kmeans = KMeans(n_clusters = 20, random_state = 1111)
+    #clusters = kmeans.fit_predict(data2)
+    #data2['clusters'] = clusters
+    #print(data2.clusters.value_counts(), file=sys.stderr)
+    dist_mat = distance_matrix(data2, data2)
+    dist_mat = pd.DataFrame(dist_mat)
+    data2['dist_2_new'] = dist_mat.tail(1).T
+    data2 = data2.sort_values('dist_2_new')
+    for index, row in data2.head(10).iterrows():
+        print('----------------')
+        print(index)
+        print(f'Article')    
+        ting = article_df.iloc[index,:]
+        print(ting['abstract'])
     return render_template('my-form.html',
                             df_html=data2.tail().to_html())
 
