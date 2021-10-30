@@ -32,7 +32,7 @@ app = Flask(__name__)
 data = None
 
 if data is None:
-    data = pd.read_csv('https://word-emeddings.s3.us-west-2.amazonaws.com/20211020_weighted_embeddings_saved_FULL.csv')
+    data = pd.read_csv('https://word-emeddings.s3.us-west-2.amazonaws.com/20211017_embeddings_saved_FULL.csv', index_col=0)
 
 def strip_punctuation_stopwords(token_list):
     return [word.lower() for word in token_list \
@@ -67,14 +67,19 @@ def my_form():
 def my_form_post():
     text = request.form['text']
     weighted_embedding = get_weighted_embedding(text)
-    data2 = pd.concat([data, weighted_embedding])
+    weighted_embedding2 = weighted_embedding.T
+    weighted_embedding2.columns = data.columns
+    print(data.columns, file=sys.stderr)
+    print(weighted_embedding2.columns, file=sys.stderr)
+    data2 = pd.concat([data, weighted_embedding2])
+    print(data2.shape, file=sys.stderr)
     # CLUSTERING
     kmeans = KMeans(n_clusters = 20, random_state = 1111)
     clusters = kmeans.fit_predict(data2)
     data2['clusters'] = clusters
+    print(data2.clusters.value_counts(), file=sys.stderr) 
     return render_template('my-form.html',
-                            df_html=data2.clusters.value_counts().to_html(),
-                            df_shape=data2.shape)
+                            df_html=data2.tail().to_html())
 
 
 if __name__ == '__main__':
