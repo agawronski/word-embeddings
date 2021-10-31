@@ -78,6 +78,8 @@ def my_form():
 @app.route('/', methods=['POST'])
 def my_form_post():
     text = request.form['text']
+    print('HERE IS THE POST')
+    print(text)
     weighted_embedding = get_weighted_embedding(text)
     weighted_embedding2 = weighted_embedding.T
     weighted_embedding2.columns = data.columns
@@ -85,6 +87,7 @@ def my_form_post():
     print(weighted_embedding2.columns, file=sys.stderr)
     data2 = pd.concat([data, weighted_embedding2])
     print(data2.shape, file=sys.stderr)
+    print(data2.tail(1))
     # CLUSTERING
     #kmeans = KMeans(n_clusters = 20, random_state = 1111)
     #clusters = kmeans.fit_predict(data2)
@@ -92,8 +95,12 @@ def my_form_post():
     #print(data2.clusters.value_counts(), file=sys.stderr)
     dist_mat = distance_matrix(data2, data2)
     dist_mat = pd.DataFrame(dist_mat)
+    print('dist_mat - tail')
+    print(dist_mat.tail(10))
     data2['dist_2_new'] = dist_mat.tail(1).T
     data2 = data2.sort_values('dist_2_new')
+    print('data2 head:')
+    print(data2.head())
     dataF = article_df.loc[data2.head(10).index,:].copy()
     dataF['first'] = dataF.fullText.apply(lambda x: x[0:3000])
     dataF['last'] = dataF.fullText.apply(lambda x: x[-3000:])
