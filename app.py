@@ -39,6 +39,12 @@ if data is None:
 if article_df is None:
     article_df = pd.read_csv('https://word-emeddings.s3.us-west-2.amazonaws.com/20211024_main_article_dataframe.csv')
 
+# The last embedding was not part of the dataset originally, getting rid of it
+article_df = article_df.loc[:article_df.shape[0]-2,:]
+
+
+print(data.shape)
+print(article_df.shape)
 
 def strip_punctuation_stopwords(token_list):
     return [word.lower() for word in token_list \
@@ -88,14 +94,23 @@ def my_form_post():
     dist_mat = pd.DataFrame(dist_mat)
     data2['dist_2_new'] = dist_mat.tail(1).T
     data2 = data2.sort_values('dist_2_new')
+    dataF = article_df.loc[data2.head(10).index,:].copy()
+    dataF['first'] = dataF.fullText.apply(lambda x: x[0:3000])
+    dataF['last'] = dataF.fullText.apply(lambda x: x[-3000:])
+    dataF = dataF.loc[:,['abstract', 'creator', 'datePublished', 'docType', 'first', 'last', 'id',
+       'identifier', 'isPartOf', 'outputFormat', 'provider', 'publicationYear',
+       'title', 'url', 'wordCount', 'language', 'pageCount', 'pageEnd', 'pageStart',
+       'pagination', 'sourceCategory', 'subTitle', 'tdmCategory', 'collection',
+       'hasPartTitle', 'publisher']]
     for index, row in data2.head(10).iterrows():
         print('----------------')
         print(index)
         print(f'Article')    
         ting = article_df.iloc[index,:]
-        print(ting['abstract'])
+        print(ting['fullText'][0:1000])
+    print(data2.head().index)
     return render_template('my-form.html',
-                            df_html=data2.tail().to_html())
+                            df_html=dataF.to_html())
 
 
 if __name__ == '__main__':
