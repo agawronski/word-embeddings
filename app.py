@@ -25,6 +25,7 @@ nltk.download('punkt')
 
 # sentence_model = SentenceTransformer("distilbert-base-nli-mean-tokens")
 # https://www.sbert.net/docs/pretrained_models.html
+sentence_model0 = SentenceTransformer("distilbert-base-nli-mean-tokens")
 sentence_model = SentenceTransformer("all-mpnet-base-v2")
 
 
@@ -83,11 +84,14 @@ def my_form_post():
     weighted_embedding = get_weighted_embedding(text)
     weighted_embedding2 = weighted_embedding.T
     weighted_embedding2.columns = data.columns
-    print(data.columns, file=sys.stderr)
+    print(data.head())
+    print(data.tail())
+    print(weighted_embedding2)
     print(weighted_embedding2.columns, file=sys.stderr)
-    data2 = pd.concat([data, weighted_embedding2])
-    print(data2.shape, file=sys.stderr)
-    print(data2.tail(1))
+    data2 = pd.concat([data, weighted_embedding2]).reset_index(drop=True)
+    print(data2.head())
+    print(data2.tail())
+    print('DID IT MAKE SENSE?')
     # CLUSTERING
     #kmeans = KMeans(n_clusters = 20, random_state = 1111)
     #clusters = kmeans.fit_predict(data2)
@@ -97,11 +101,19 @@ def my_form_post():
     dist_mat = pd.DataFrame(dist_mat)
     print('dist_mat - tail')
     print(dist_mat.tail(10))
+    print(dist_mat.tail(1).T)
     data2['dist_2_new'] = dist_mat.tail(1).T
+    print('data2 head BEFORE SORT')
+    print(data2.head())
+    print('data2 tail BEFORE SORT')
+    print(data2.tail())
     data2 = data2.sort_values('dist_2_new')
     print('data2 head:')
     print(data2.head())
-    dataF = article_df.loc[data2.head(10).index,:].copy()
+    print('data2 tail after sort:')
+    print(data2.tail())
+    article_index = [x for x in data2.head().index if x != 1501]
+    dataF = article_df.loc[article_index,:].copy()
     dataF['first'] = dataF.fullText.apply(lambda x: x[0:3000])
     dataF['last'] = dataF.fullText.apply(lambda x: x[-3000:])
     dataF = dataF.loc[:,['abstract', 'creator', 'datePublished', 'docType', 'first', 'last', 'id',
@@ -109,13 +121,13 @@ def my_form_post():
        'title', 'url', 'wordCount', 'language', 'pageCount', 'pageEnd', 'pageStart',
        'pagination', 'sourceCategory', 'subTitle', 'tdmCategory', 'collection',
        'hasPartTitle', 'publisher']]
-    for index, row in data2.head(10).iterrows():
-        print('----------------')
-        print(index)
-        print(f'Article')    
-        ting = article_df.iloc[index,:]
-        print(ting['fullText'][0:1000])
-    print(data2.head().index)
+    #for index, row in data2.head(10).iterrows():
+    #    print('----------------')
+    #    print(index)
+    #    print(f'Article')    
+    #    ting = article_df.iloc[index,:]
+    #    print(ting['fullText'][0:1000])
+    #print(data2.head().index)
     return render_template('my-form.html',
                             df_html=dataF.to_html())
 
