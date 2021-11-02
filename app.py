@@ -25,7 +25,6 @@ nltk.download('punkt')
 
 # sentence_model = SentenceTransformer("distilbert-base-nli-mean-tokens")
 # https://www.sbert.net/docs/pretrained_models.html
-sentence_model0 = SentenceTransformer("distilbert-base-nli-mean-tokens")
 sentence_model = SentenceTransformer("all-mpnet-base-v2")
 
 
@@ -35,7 +34,8 @@ data = None
 article_df = None
 
 if data is None:
-    data = pd.read_csv('https://word-emeddings.s3.us-west-2.amazonaws.com/20211017_embeddings_saved_FULL.csv', index_col=0)
+    #data = pd.read_csv('https://word-emeddings.s3.us-west-2.amazonaws.com/20211017_embeddings_saved_FULL.csv', index_col=0)
+    data = pd.read_csv('https://word-emeddings.s3.us-west-2.amazonaws.com/20211031_weighted_embeddings_saved_PARTIAL.csv')
 
 if article_df is None:
     article_df = pd.read_csv('https://word-emeddings.s3.us-west-2.amazonaws.com/20211024_main_article_dataframe.csv')
@@ -112,7 +112,7 @@ def my_form_post():
     print(data2.head())
     print('data2 tail after sort:')
     print(data2.tail())
-    article_index = [x for x in data2.head().index if x != 1501]
+    article_index = [x for x in data2.head().index if x != 1200]
     dataF = article_df.loc[article_index,:].copy()
     dataF['first'] = dataF.fullText.apply(lambda x: x[0:3000])
     dataF['last'] = dataF.fullText.apply(lambda x: x[-3000:])
