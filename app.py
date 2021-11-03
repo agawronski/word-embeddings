@@ -27,7 +27,7 @@ nltk.download('punkt')
 # https://www.sbert.net/docs/pretrained_models.html
 sentence_model = SentenceTransformer("all-mpnet-base-v2")
 
-
+###florencia 
 app = Flask(__name__)
 
 data = None
@@ -124,7 +124,7 @@ def my_form_post():
     #for index, row in data2.head(10).iterrows():
     #    print('----------------')
     #    print(index)
-    #    print(f'Article')    
+    #    print(f'Article')
     #    ting = article_df.iloc[index,:]
     #    print(ting['fullText'][0:1000])
     #print(data2.head().index)
