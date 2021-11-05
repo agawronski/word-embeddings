@@ -20,7 +20,7 @@ import numpy as np
 import string
 import nltk
 
-nltk.download('stopwords')
+nltk.download('stopwords') # download stopwords
 nltk.download('punkt')
 
 # sentence_model = SentenceTransformer("distilbert-base-nli-mean-tokens")
