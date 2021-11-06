@@ -48,12 +48,17 @@ def load_data(file):
     return data
 
 
-data = load_data('pesos.csv')
+try:
+    data = load_data('pesos.csv')
+except:
+    data = pd.read_csv('https://word-emeddings.s3.us-west-2.amazonaws.com/20211031_weighted_embeddings_saved_FULL.csv')
 
+try:
+    article_df = load_data('datajstore.csv')
+except:
+    article_df = pd.read_csv('https://word-emeddings.s3.us-west-2.amazonaws.com/20211024_main_article_dataframe.csv')
 
-article_df = load_data('datajstore.csv')
 article_df = article_df.loc[:article_df.shape[0]-2,:]
-
 
 print(data.shape)
 print(article_df.shape)
@@ -104,7 +109,7 @@ print('data2 head:')
 print(data2.head())
 print('data2 tail after sort:')
 print(data2.tail())
-article_index = [x for x in data2.head().index if x != 1200]
+article_index = [x for x in data2.head().index if x != 1500]
 dataF = article_df.loc[article_index,:].copy()
 dataF['first'] = dataF.fullText.apply(lambda x: x[0:3000])
 dataF['last'] = dataF.fullText.apply(lambda x: x[-3000:])
