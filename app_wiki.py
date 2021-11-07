@@ -1,12 +1,10 @@
-import streamlit as st
-
-import spacy_streamlit
 from urllib import request
 from io import StringIO
 import json
 import sys
 import os
 import re
+
 from nltk.tokenize import sent_tokenize, word_tokenize
 from sentence_transformers import SentenceTransformer, util
 from nltk.probability import FreqDist
@@ -14,16 +12,18 @@ from nltk.stem import LancasterStemmer
 from nltk.stem import PorterStemmer
 from sklearn.cluster import KMeans
 from scipy.spatial import distance_matrix
-# from bs4 import BeautifulSoup
+import spacy_streamlit
+import streamlit as st
 import pandas as pd
 import numpy as np
+import spacy
 import string
 import nltk
 
-nltk.download('stopwords') # download stopwords
+nltk.download('stopwords')
 nltk.download('punkt')
+nlp = spacy.load("en_core_web_sm")
 
-# sentence_model = SentenceTransformer("distilbert-base-nli-mean-tokens")
 # https://www.sbert.net/docs/pretrained_models.html
 sentence_model = SentenceTransformer("all-mpnet-base-v2")
 
@@ -36,7 +36,7 @@ doc = spacy_streamlit.process_text(spacy_model, text)
 
 spacy_streamlit.visualize_ner(
     doc,
-    labels=['ORG','GPE','MONEY','EVENT', 'LAW'],
+    labels=nlp.get_pipe("ner").labels,
     title="Named Entities",
     show_table=False
 )
@@ -48,17 +48,15 @@ def load_data(file):
     return data
 
 
-try:
-    data = load_data('pesos.csv')
-except:
-    data = pd.read_csv('https://word-emeddings.s3.us-west-2.amazonaws.com/20211031_weighted_embeddings_saved_FULL.csv')
+data = pd.read_csv('https://word-emeddings.s3.us-west-2.amazonaws.com/20211102_WIKI_1_weighted_embeddings_saved_FULL.csv')
+article_df = pd.read_csv('https://word-emeddings.s3.us-west-2.amazonaws.com/people_wiki.csv')
 
-try:
-    article_df = load_data('datajstore.csv')
-except:
-    article_df = pd.read_csv('https://word-emeddings.s3.us-west-2.amazonaws.com/20211024_main_article_dataframe.csv')
 
-article_df = article_df.loc[:article_df.shape[0]-2,:]
+data = data.sample(n=1000, random_state=111)
+article_df = article_df.loc[data.index,:]
+
+data = data.reset_index(drop=True)
+article_df = article_df.reset_index(drop=True)
 
 print(data.shape)
 print(article_df.shape)
@@ -91,9 +89,11 @@ print(data.tail())
 print(weighted_embedding2)
 print(weighted_embedding2.columns, file=sys.stderr)
 data2 = pd.concat([data, weighted_embedding2]).reset_index(drop=True)
+print(data2.shape)
 print(data2.head())
 print(data2.tail())
 print('DID IT MAKE SENSE?')
+print(data2.dtypes)
 dist_mat = distance_matrix(data2, data2)
 dist_mat = pd.DataFrame(dist_mat)
 print('dist_mat - tail')
@@ -109,9 +109,7 @@ print('data2 head:')
 print(data2.head())
 print('data2 tail after sort:')
 print(data2.tail())
-article_index = [x for x in data2.head().index if x != 1500]
+article_index = [x for x in data2.head().index if x != 1000]
 dataF = article_df.loc[article_index,:].copy()
-dataF['first'] = dataF.fullText.apply(lambda x: x[0:3000])
-dataF['last'] = dataF.fullText.apply(lambda x: x[-3000:])
 # dataF = dataF.loc[:,['abstract', 'creator', 'datePublished']]
 st.dataframe(dataF)
