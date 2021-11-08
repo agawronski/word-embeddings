@@ -37,7 +37,7 @@ doc = spacy_streamlit.process_text(spacy_model, text)
 
 spacy_streamlit.visualize_ner(
     doc,
-    labels==nlp.get_pipe("ner").labels,
+    labels=nlp.get_pipe("ner").labels,
     title="Named Entities",
     show_table=False
 )
