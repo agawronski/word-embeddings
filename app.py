@@ -1,12 +1,10 @@
-import streamlit as st
-
-import spacy_streamlit
 from urllib import request
 from io import StringIO
 import json
 import sys
 import os
 import re
+
 from nltk.tokenize import sent_tokenize, word_tokenize
 from sentence_transformers import SentenceTransformer, util
 from nltk.probability import FreqDist
@@ -14,16 +12,19 @@ from nltk.stem import LancasterStemmer
 from nltk.stem import PorterStemmer
 from sklearn.cluster import KMeans
 from scipy.spatial import distance_matrix
-# from bs4 import BeautifulSoup
+import spacy_streamlit
+import streamlit as st
 import pandas as pd
 import numpy as np
+import spacy
 import string
 import nltk
 
 nltk.download('stopwords') # download stopwords
 nltk.download('punkt')
+nlp = spacy.load("en_core_web_sm")
 
-# sentence_model = SentenceTransformer("distilbert-base-nli-mean-tokens")
+
 # https://www.sbert.net/docs/pretrained_models.html
 sentence_model = SentenceTransformer("all-mpnet-base-v2")
 
@@ -36,7 +37,7 @@ doc = spacy_streamlit.process_text(spacy_model, text)
 
 spacy_streamlit.visualize_ner(
     doc,
-    labels=['ORG','GPE','MONEY','EVENT', 'LAW'],
+    labels==nlp.get_pipe("ner").labels,
     title="Named Entities",
     show_table=False
 )
