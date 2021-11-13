@@ -1,4 +1,4 @@
-# Word Embeddings 
+# Word Embeddings
 
 get_embeddings/inital_clustering.py
 - turn healthcare_industry_from_1900_2021.jsonl into a data frame
@@ -6,9 +6,9 @@ get_embeddings/inital_clustering.py
 - get the embedding for every single word of the article
 - get embeddings using: SentenceTransformer("distilbert-base-nli-mean-tokens")
 - get the average embedding across all words
+- explored kmeans clustering
 
-
-get_embeddings/get_embeddings_V3.py
+get_embeddings/get_embeddings_jstor.py
 - uses function "get_weighted_embedding"
 - get word tokens using word_tokenize from nltk.tokenize
 - strip punctuation (string.punctuation) and remove stopwords (nltk.corpus.stopwords)
