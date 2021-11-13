@@ -30,29 +30,29 @@ sentence_model = SentenceTransformer("all-mpnet-base-v2")
 
 st.title('GLG project')
 spacy_model = "en_core_web_sm"
-DEFAULT_TEXT='complete text'
+DEFAULT_TEXT=''
 text = st.text_area("Text to analyze", DEFAULT_TEXT, height=200)
-doc = spacy_streamlit.process_text(spacy_model, text)
-
-spacy_streamlit.visualize_ner(
-    doc,
-    labels=nlp.get_pipe("ner").labels,
-    title="Named Entities",
-    show_table=False
-)
+print(text)
+#if text != 'complete text':
+#    doc = spacy_streamlit.process_text(spacy_model, text)
+#    spacy_streamlit.visualize_ner(
+#        doc,
+#        labels=nlp.get_pipe("ner").labels,
+#        title="Named Entities",
+#        show_table=False)
 
 
 @st.cache
 def load_data(file):
-    data = pd.read_csv(file, index_col=0)
+    data = pd.read_csv(file)
     return data
 
 
-data = pd.read_csv('https://word-emeddings.s3.us-west-2.amazonaws.com/20211102_WIKI_1_weighted_embeddings_saved_FULL.csv')
-article_df = pd.read_csv('https://word-emeddings.s3.us-west-2.amazonaws.com/people_wiki.csv')
+data = load_data('https://word-emeddings.s3.us-west-2.amazonaws.com/20211102_WIKI_1_weighted_embeddings_saved_FULL.csv')
+article_df = load_data('https://word-emeddings.s3.us-west-2.amazonaws.com/people_wiki.csv')
 
 
-data = data.sample(n=2000, random_state=111)
+data = data.sample(n=5000, random_state=111)
 article_df = article_df.loc[data.index,:]
 
 data = data.reset_index(drop=True)
@@ -81,35 +81,43 @@ def get_weighted_embedding(token_list_long):
     final = pd.DataFrame(weighted_embed.sum(axis=0))
     return final
 
-weighted_embedding = get_weighted_embedding(text)
-weighted_embedding2 = weighted_embedding.T
-weighted_embedding2.columns = data.columns
-print(data.head())
-print(data.tail())
-print(weighted_embedding2)
-print(weighted_embedding2.columns, file=sys.stderr)
-data2 = pd.concat([data, weighted_embedding2]).reset_index(drop=True)
-print(data2.shape)
-print(data2.head())
-print(data2.tail())
-print('DID IT MAKE SENSE?')
-print(data2.dtypes)
-dist_mat = distance_matrix(data2, data2)
-dist_mat = pd.DataFrame(dist_mat)
-print('dist_mat - tail')
-print(dist_mat.tail(10))
-print(dist_mat.tail(1).T)
-data2['dist_2_new'] = dist_mat.tail(1).T
-print('data2 head BEFORE SORT')
-print(data2.head())
-print('data2 tail BEFORE SORT')
-print(data2.tail())
-data2 = data2.sort_values('dist_2_new')
-print('data2 head:')
-print(data2.head())
-print('data2 tail after sort:')
-print(data2.tail())
-article_index = [x for x in data2.head().index if x != 2000]
-dataF = article_df.loc[article_index,:].copy()
-# dataF = dataF.loc[:,['abstract', 'creator', 'datePublished']]
-st.dataframe(dataF)
+
+if text != '':
+    weighted_embedding = get_weighted_embedding(text)
+    weighted_embedding2 = weighted_embedding.T
+    weighted_embedding2.columns = data.columns
+    print(data.head())
+    print(data.tail())
+    print(weighted_embedding2)
+    data2 = pd.concat([data, weighted_embedding2]).reset_index(drop=True)
+    print(data2.shape)
+    print(data2.head())
+    print(data2.tail())
+    print('DID IT MAKE SENSE?')
+    print(data2.dtypes)
+    dist_mat = distance_matrix(data2, data2)
+    dist_mat = pd.DataFrame(dist_mat)
+    print('dist_mat - tail')
+    print(dist_mat.tail(10))
+    print(dist_mat.tail(1).T)
+    data2['dist_2_new'] = dist_mat.tail(1).T
+    print('data2 head BEFORE SORT')
+    print(data2.head())
+    print('data2 tail BEFORE SORT')
+    print(data2.tail())
+    data2 = data2.sort_values('dist_2_new')
+    print('data2 head:')
+    print(data2.head())
+    print('data2 tail after sort:')
+    print(data2.tail())
+    article_index = [x for x in data2.head().index if x != 5000]
+    dataF = article_df.loc[article_index,:].copy()
+    st.dataframe(dataF)
+    for index, row  in dataF.head(1).iterrows():
+        doc = spacy_streamlit.process_text(spacy_model, row['text'])
+        spacy_streamlit.visualize_ner(
+            doc,
+            labels=nlp.get_pipe("ner").labels,
+            title='Named Entities - ' + row['name'],
+            show_table=False)
+

@@ -116,3 +116,8 @@ dataF['first'] = dataF.fullText.apply(lambda x: x[0:3000])
 dataF['last'] = dataF.fullText.apply(lambda x: x[-3000:])
 # dataF = dataF.loc[:,['abstract', 'creator', 'datePublished']]
 st.dataframe(dataF)
+
+
+
+
+
