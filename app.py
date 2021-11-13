@@ -19,6 +19,7 @@ import numpy as np
 import spacy
 import string
 import nltk
+import requests
 
 nltk.download('stopwords') # download stopwords
 nltk.download('punkt')
@@ -28,6 +29,16 @@ nlp = spacy.load("en_core_web_sm")
 # https://www.sbert.net/docs/pretrained_models.html
 sentence_model = SentenceTransformer("all-mpnet-base-v2")
 
+def query_raw(text):
+    url="https://bern.korea.ac.kr/plain"
+    ner=requests.post(url, data={'sample_text': text}).json()
+    df=pd.json_normalize(ner)
+    outdf = pd.DataFrame()
+    for i in ner['denotations']:
+        row = pd.json_normalize(i)
+        outdf = pd.concat([outdf, row])
+        outdf.reset_index(drop=True, inplace=True)
+    return outdf
 
 st.title('GLG project')
 spacy_model = "en_core_web_sm"
@@ -41,6 +52,16 @@ spacy_streamlit.visualize_ner(
     title="Named Entities",
     show_table=False
 )
+
+st.subheader('Named Entities with BIOBERT')
+ner=query_raw(text)
+ner.reset_index(drop=True, inplace=True)
+ner['word']=0
+for i in ner.index:
+    ner['word'][i]=text[ner.iloc[i]['span.begin']:ner.iloc[i]['span.end']]
+ner=ner[['id', 'obj', 'word']]
+st.dataframe(ner)
+
 
 
 @st.cache
@@ -83,6 +104,7 @@ def get_weighted_embedding(token_list_long):
     weighted_embed = np.dot(np.diag(token_counts['weight']), embeddings)
     final = pd.DataFrame(weighted_embed.sum(axis=0))
     return final
+
 
 weighted_embedding = get_weighted_embedding(text)
 weighted_embedding2 = weighted_embedding.T
