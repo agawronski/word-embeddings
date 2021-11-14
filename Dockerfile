@@ -4,5 +4,6 @@ RUN apt-get install -y python3-pip python-dev build-essential
 COPY . /app
 WORKDIR /app
 RUN pip3 install -r requirements.txt
-ENTRYPOINT ["python3"]
+RUN python3 -m spacy download en
+ENTRYPOINT ["streamlit", "run"]
 CMD ["app.py"]
