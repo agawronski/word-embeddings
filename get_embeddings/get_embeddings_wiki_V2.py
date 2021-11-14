@@ -1,5 +1,6 @@
 #-------------------------------------------------------------------------------
 # nohup python3 -u get_embeddings_wiki_V2.py > output_get_embeddings_wiki_V2.log &
+# [1] 28930
 # pip3 install install beautifulsoup4
 # pip3 install sentence-transformers
 # pip3 install pandas
