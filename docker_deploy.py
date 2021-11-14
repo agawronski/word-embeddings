@@ -8,13 +8,16 @@ sudo service docker start
 # make an ECR repository and get the URI
 414854915400.dkr.ecr.us-west-2.amazonaws.com/glg_jstor_v1
 
-
+# build the image
 sudo docker build -t 414854915400.dkr.ecr.us-west-2.amazonaws.com/glg_jstor_v1:latest .
 
+# test that the build runs
 docker run --publish 8501:8501 414854915400.dkr.ecr.us-west-2.amazonaws.com/glg_jstor_v1:latest
 
+# login
 aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 414854915400.dkr.ecr.us-west-2.amazonaws.com/glg_jstor_v1
 
+# push the image to ECR
 docker push 414854915400.dkr.ecr.us-west-2.amazonaws.com/glg_jstor_v1:latest
 
 # Create a cluster 1 time
