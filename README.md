@@ -1,7 +1,8 @@
 # Word Embeddings
 
 1. Can we group similar client requests together? (Eg. Google News)
-- Kmeans on embeddings works reasonably well (embeddings with SentenceTransformer("all-mpnet-base-v2"))
+- Kmeans on embeddings works reasonably well
+    - embeddings with SentenceTransformer("all-mpnet-base-v2")
     - Elbow method does not provide a clear number of clusters
     - Either set the number of clusters to be:
         a) very high, for example n_clusters = (n/10), or
@@ -15,7 +16,7 @@
 - one method with Dynamic Topic Modeling
 
 
-
+--------------------------------------------------------------------------------
 get_embeddings/inital_clustering.py
 - turn healthcare_industry_from_1900_2021.jsonl into a data frame
 - strip punctuation and stopwords
