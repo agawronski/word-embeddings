@@ -1,19 +1,19 @@
 # Word Embeddings
 
 1. Can we group similar client requests together? (Eg. Google News)
-- Kmeans on embeddings works reasonably well
-    - embeddings with SentenceTransformer("all-mpnet-base-v2")
-    - Elbow method does not provide a clear number of clusters
-    - Either set the number of clusters to be:
-        a) very high, for example n_clusters = (n/10), or
-        b) low, for example n_clusters = 20, and get the cluster centers and find the closest ones to the cluster centers
-- Take a new request, get it's embedding and find the nearest 5 like in the app in this repo
+    - Kmeans on embeddings works reasonably well
+        - embeddings with SentenceTransformer("all-mpnet-base-v2")
+        - Elbow method does not provide a clear number of clusters
+        - Either set the number of clusters to be:
+            a) very high, for example n_clusters = (n/10), or
+            b) low, for example n_clusters = 20, and get the cluster centers and find the closest ones to the cluster centers
+    - Take a new request, get it's embedding and find the nearest 5 like in the app in this repo
 
 2. Can we perform NER for unstructured data geared towards the Tech Industry or Healthcare industry with reasonable accuracy?
-- ???
+    - ???
 
 3. Can we find hierarchical patterns in the topics for requests to identify temporal directions of the requests?
-- one method with Dynamic Topic Modeling
+    - one method with Dynamic Topic Modeling
 
 
 --------------------------------------------------------------------------------
