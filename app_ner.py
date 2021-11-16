@@ -7,7 +7,8 @@ import flair
 from streamlit import caching
 from pathlib import Path
 import torch
-
+from helper import render_ner_html_custom
+import pandas as pd 
 
 
 colors = {
@@ -63,7 +64,8 @@ def load_flair_model():
 def predict_flair(model, text):
     manual_sentence = Sentence(text)
     model.predict(manual_sentence)
-    return render_ner_html(manual_sentence, colors=colors, wrap_page=False)
+    #return render_ner_html(manual_sentence, colors=colors, wrap_page=False)
+    return manual_sentence
 
 
 
@@ -72,7 +74,9 @@ def predict_flair(model, text):
 #@st.cache(suppress_st_warning=True)
 def load_hunflair_model():
     # load biomedical tagger
-    tagger = MultiTagger.load("hunflair")
+    tagger = MultiTagger.load('hunflair')
+    #tagger = MultiTagger.load('hunflair-gene')
+
     #q_tagger = torch.quantization.quantize_dynamic(
     #    tagger, {torch.nn.Linear}, dtype=torch.qint8
         #tagger, {torch.nn.LSTM, torch.nn.Linear}, dtype=torch.qint8
@@ -85,8 +89,19 @@ def load_hunflair_model():
 def predict_hunflair(model, text):
     manual_sentence = Sentence(text)
     model.predict(manual_sentence)
-    return manual_sentence.to_tagged_string()
-    #return render_ner_html(manual_sentence, colors=colors_2, wrap_page=False)
+    #return render_ner_html_custom(manual_sentence, colors=colors_2)
+    #return manual_sentence.to_tagged_string()
+    return manual_sentence
+
+
+def get_tag(sentence):
+    #spans = [(entity.text, entity.tag, entity.score) for entity in sentence.get_spans()]
+    #df = pd.DataFrame(spans, columns=['text', 'tag', 'score'])
+    spans = [(entity.text, entity.tag) for entity in sentence.get_spans()]
+    df = pd.DataFrame(spans, columns=['text', 'tag' ])   
+    df = df.drop_duplicates(keep=False)
+    return df
+
 
 
 
@@ -110,14 +125,18 @@ if choice =='NER':
         if st.button('Analyze'):
             sentence = predict_flair(model, user_input)
             st.success("Below is your tagged string.")
-            st.write(sentence, unsafe_allow_html=True)
+            #st.write(sentence, unsafe_allow_html=True)
+            df = get_tag(sentence)
+            st.dataframe(df)
 
     if ner_choice == 'HunFlair':
         model = load_hunflair_model()
         if st.button('Analyze'):
             sentence = predict_hunflair(model, user_input)
+            df = get_tag(sentence)
             st.success("Below is your tagged string.")
-            st.write(sentence, unsafe_allow_html=True)
+            st.dataframe(df)
+            #st.write(sentence, unsafe_allow_html=True)
 
 
 
