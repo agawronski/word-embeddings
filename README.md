@@ -15,6 +15,13 @@
 3. Can we find hierarchical patterns in the topics for requests to identify temporal directions of the requests?
     - one method with Dynamic Topic Modeling
 
+V1 JStor:
+http://glg-load-balancer-380766649.us-west-2.elb.amazonaws.com:8501/
+
+
+
+
+
 
 --------------------------------------------------------------------------------
 get_embeddings/inital_clustering.py
