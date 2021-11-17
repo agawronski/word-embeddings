@@ -24,6 +24,7 @@ debugpy==1.5.1
 decorator==5.1.0
 defusedxml==0.7.1
 entrypoints==0.3
+flair
 gitdb==4.0.9
 GitPython==3.1.24
 idna==3.3
@@ -82,7 +83,9 @@ smmap==5.0.0
 spacy==3.1.4
 spacy-legacy==3.0.8
 spacy-streamlit==1.0.2
+scispacy
 srsly==2.4.2
+st-annotated-text
 streamlit==1.1.0
 terminado==0.12.1
 testpath==0.5.0
