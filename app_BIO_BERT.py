@@ -76,7 +76,7 @@ except:
     data = pd.read_csv('https://word-emeddings.s3.us-west-2.amazonaws.com/20211031_weighted_embeddings_saved_FULL.csv')
 
 try:
-    article_df = load_data('datajstore.csv')
+    article_df = load_data('https://word-emeddings.s3.us-west-2.amazonaws.com/20211116_people_wiki_oc.csv')
 except:
     article_df = pd.read_csv('https://word-emeddings.s3.us-west-2.amazonaws.com/20211024_main_article_dataframe.csv')
 
@@ -138,8 +138,3 @@ dataF['first'] = dataF.fullText.apply(lambda x: x[0:3000])
 dataF['last'] = dataF.fullText.apply(lambda x: x[-3000:])
 # dataF = dataF.loc[:,['abstract', 'creator', 'datePublished']]
 st.dataframe(dataF)
-
-
-
-
-
