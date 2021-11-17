@@ -35,7 +35,7 @@ docker push 414854915400.dkr.ecr.us-west-2.amazonaws.com/glg_wiki_v1:latest
     # Application load balancer
     # create a new load balancer before completing this (EC2 section of AWS)
     # Load balancer: glg-load-balancer-wiki-v1, same VPC and subnets
-    # Listener: whatever port you want, "Create Target Group"
+    # Listener: HTTP 8501 "Create Target Group"
         # Target group: Target Type: IP addresses glg-target-group-wiki-v1 (Target group name)
         # Protocol HTTP Port 8501 (the open port on the container we are running the app)
         # Health checks: HTTP /healthz ... this is because that is how streamlit allows for a health check, would be different with a different app
@@ -50,8 +50,25 @@ docker push 414854915400.dkr.ecr.us-west-2.amazonaws.com/glg_wiki_v1:latest
 # Target group name: choose the new target group
 # Create service
 
-glg-load-balancer-wiki-v1-112780392.us-west-2.elb.amazonaws.com
+glg-load-balancer-wiki-v1-1343157830.us-west-2.elb.amazonaws.com
 
+
+### BIO BERT
+
+# make an ECR repository and get the URI
+414854915400.dkr.ecr.us-west-2.amazonaws.com/glg_bio_bert_v1
+
+# build the image
+sudo docker build -f DockerfileWiki -t 414854915400.dkr.ecr.us-west-2.amazonaws.com/glg_wiki_v1:latest .
+
+# test that the build runs
+docker run --publish 8501:8501 414854915400.dkr.ecr.us-west-2.amazonaws.com/glg_wiki_v1:latest
+
+# login
+aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 414854915400.dkr.ecr.us-west-2.amazonaws.com/glg_wiki_v1
+
+# push the image to ECR
+docker push 414854915400.dkr.ecr.us-west-2.amazonaws.com/glg_wiki_v1:latest
 
 
 --------------------------------------------------------------------------------
