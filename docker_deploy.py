@@ -53,22 +53,33 @@ docker push 414854915400.dkr.ecr.us-west-2.amazonaws.com/glg_wiki_v1:latest
 glg-load-balancer-wiki-v1-1343157830.us-west-2.elb.amazonaws.com
 
 
+### APP NER
+
+# make an ECR repository and get the URI
+414854915400.dkr.ecr.us-west-2.amazonaws.com/glg_ner_v1
+
+# build the image
+sudo docker build -f Dockerfile_app_ner -t 414854915400.dkr.ecr.us-west-2.amazonaws.com/glg_ner_v1:latest .
+
+
+
+
 ### BIO BERT
 
 # make an ECR repository and get the URI
 414854915400.dkr.ecr.us-west-2.amazonaws.com/glg_bio_bert_v1
 
 # build the image
-sudo docker build -f DockerfileWiki -t 414854915400.dkr.ecr.us-west-2.amazonaws.com/glg_wiki_v1:latest .
+sudo docker build -f DockerfileBioBert -t 414854915400.dkr.ecr.us-west-2.amazonaws.com/glg_bio_bert_v1:latest .
 
 # test that the build runs
-docker run --publish 8501:8501 414854915400.dkr.ecr.us-west-2.amazonaws.com/glg_wiki_v1:latest
+docker run --publish 8501:8501 414854915400.dkr.ecr.us-west-2.amazonaws.com/glg_bio_bert_v1:latest
 
 # login
-aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 414854915400.dkr.ecr.us-west-2.amazonaws.com/glg_wiki_v1
+aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 414854915400.dkr.ecr.us-west-2.amazonaws.com/glg_bio_bert_v1
 
 # push the image to ECR
-docker push 414854915400.dkr.ecr.us-west-2.amazonaws.com/glg_wiki_v1:latest
+docker push 414854915400.dkr.ecr.us-west-2.amazonaws.com/glg_bio_bert_v1:latest
 
 
 --------------------------------------------------------------------------------
