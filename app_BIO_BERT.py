@@ -66,7 +66,7 @@ st.dataframe(ner)
 
 @st.cache
 def load_data(file):
-    data = pd.read_csv(file, index_col=0)
+    data = pd.read_csv(file)
     return data
 
 
