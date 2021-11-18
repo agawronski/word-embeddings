@@ -76,8 +76,8 @@ st.subheader('Documents')
 # in this case weighted embedding is just "full embedding"
 weighted_embedding = sentence_model.encode(text, show_progress_bar=False)
 weighted_embedding2 = pd.DataFrame(weighted_embedding.T)
-print(type(weighted_embedding))
-print(weighted_embedding.shape)
+print(type(weighted_embedding2))
+print(weighted_embedding2.shape)
 weighted_embedding2.columns = data.columns
 print(data.head())
 print(data.tail())
