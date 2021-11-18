@@ -57,11 +57,13 @@ st.subheader('Named Entities with BIOBERT')
 ner=query_raw(text)
 ner.reset_index(drop=True, inplace=True)
 ner['word']=0
-for i in ner.index:
-    ner['word'][i]=text[ner.iloc[i]['span.begin']:ner.iloc[i]['span.end']]
-ner=ner[['id', 'obj', 'word']]
-st.dataframe(ner)
-
+try:
+    for i in ner.index:
+        ner['word'][i]=text[ner.iloc[i]['span.begin']:ner.iloc[i]['span.end']]
+    ner=ner[['id', 'obj', 'word']]
+    st.dataframe(ner)
+except:
+    st.subheader('No BIOBERT found')
 
 
 @st.cache
