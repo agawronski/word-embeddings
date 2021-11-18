@@ -71,20 +71,10 @@ def strip_punctuation_stopwords(token_list):
                 and len(word) > 1]
 
 st.subheader('Documents')
-def get_weighted_embedding(token_list_long):
-    text_token = word_tokenize(token_list_long)
-    text_token_clean = strip_punctuation_stopwords(text_token)
-    token_counts = FreqDist(text_token_clean)
-    token_counts = pd.DataFrame(token_counts, index=[0]).T
-    token_counts.columns = ['counts']
-    token_counts = token_counts.sort_values('counts', ascending=False).head(30)
-    token_counts['weight'] = token_counts/token_counts.sum()
-    embeddings = sentence_model.encode(token_counts.index, show_progress_bar=False)
-    weighted_embed = np.dot(np.diag(token_counts['weight']), embeddings)
-    final = pd.DataFrame(weighted_embed.sum(axis=0))
-    return final
 
-weighted_embedding = get_weighted_embedding(text)
+
+# in this case weighted embedding is just "full embedding"
+weighted_embedding = sentence_model.encode(text, show_progress_bar=False)
 weighted_embedding2 = weighted_embedding.T
 weighted_embedding2.columns = data.columns
 print(data.head())
