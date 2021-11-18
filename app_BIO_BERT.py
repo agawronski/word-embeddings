@@ -128,7 +128,7 @@ print('data2 head:')
 print(data2.head())
 print('data2 tail after sort:')
 print(data2.tail())
-article_index = [x for x in data2.head().index if x != 1500]
+article_index = [x for x in data2.head().index if x != 5000]
 dataF = article_df.loc[article_index,:].copy()
 # dataF['first'] = dataF.fullText.apply(lambda x: x[0:3000])
 # dataF['last'] = dataF.fullText.apply(lambda x: x[-3000:])
