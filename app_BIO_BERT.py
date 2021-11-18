@@ -82,8 +82,8 @@ article_df = load_data2('https://word-emeddings.s3.us-west-2.amazonaws.com/20211
 data = data.sample(n=5000, random_state=111)
 article_df = article_df.loc[data.index,:]
 
-print(article_df.head())
-print(article_df.tail())
+data = data.reset_index(drop=True)
+article_df = article_df.reset_index(drop=True)
 
 print(data.shape)
 print(article_df.shape)
