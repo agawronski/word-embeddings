@@ -75,6 +75,8 @@ def load_data(file):
 data = load_data('https://word-emeddings.s3.us-west-2.amazonaws.com/20211102_WIKI_1_weighted_embeddings_saved_FULL.csv')
 article_df = load_data('https://word-emeddings.s3.us-west-2.amazonaws.com/20211116_people_wiki_oc.csv')
 
+data = data.sample(n=7000, random_state=111)
+article_df = article_df.loc[data.index,:]
 
 print(data.shape)
 print(article_df.shape)
