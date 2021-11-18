@@ -73,7 +73,7 @@ def load_data(file):
 
 @st.cache
 def load_data2(file):
-    data = pd.read_csv(file, index=[0])
+    data = pd.read_csv(file, index_col=0)
     return data
 
 data = load_data('https://word-emeddings.s3.us-west-2.amazonaws.com/20211102_WIKI_1_weighted_embeddings_saved_FULL.csv')
