@@ -82,6 +82,9 @@ article_df = load_data2('https://word-emeddings.s3.us-west-2.amazonaws.com/20211
 data = data.sample(n=5000, random_state=111)
 article_df = article_df.loc[data.index,:]
 
+print(article_df.head())
+print(article_df.tail())
+
 print(data.shape)
 print(article_df.shape)
 
@@ -137,4 +140,4 @@ dataF = article_df.loc[article_index,:].copy()
 # dataF['first'] = dataF.fullText.apply(lambda x: x[0:3000])
 # dataF['last'] = dataF.fullText.apply(lambda x: x[-3000:])
 # dataF = dataF.loc[:,['abstract', 'creator', 'datePublished']]
-st.dataframe(dataF)
+st.dataframe(dataF.head())
