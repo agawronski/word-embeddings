@@ -70,17 +70,9 @@ def load_data(file):
     return data
 
 
-try:
-    data = load_data('pesos.csv')
-except:
-    data = pd.read_csv('https://word-emeddings.s3.us-west-2.amazonaws.com/20211031_weighted_embeddings_saved_FULL.csv')
+data = load_data('https://word-emeddings.s3.us-west-2.amazonaws.com/20211102_WIKI_1_weighted_embeddings_saved_FULL.csv')
+article_df = load_data('https://word-emeddings.s3.us-west-2.amazonaws.com/20211116_people_wiki_oc.csv')
 
-try:
-    article_df = load_data('https://word-emeddings.s3.us-west-2.amazonaws.com/20211116_people_wiki_oc.csv')
-except:
-    article_df = pd.read_csv('https://word-emeddings.s3.us-west-2.amazonaws.com/20211024_main_article_dataframe.csv')
-
-article_df = article_df.loc[:article_df.shape[0]-2,:]
 
 print(data.shape)
 print(article_df.shape)
