@@ -48,8 +48,10 @@ def load_data(file):
     return data
 
 
-data = load_data('https://word-emeddings.s3.us-west-2.amazonaws.com/20211102_WIKI_1_weighted_embeddings_saved_FULL.csv')
-article_df = load_data('https://word-emeddings.s3.us-west-2.amazonaws.com/people_wiki.csv')
+data = load_data('https://word-emeddings.s3.us-west-2.amazonaws.com/20211112_WIKI_2_full_text_embeddings_saved_COMPLETED.csv')
+article_df = load_data('https://word-emeddings.s3.us-west-2.amazonaws.com/20211116_people_wiki_oc.csv')
+
+print(article_df.head())
 
 
 data = data.sample(n=5000, random_state=111)
