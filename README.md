@@ -18,11 +18,20 @@
 V1 JStor:
 http://glg-load-balancer-380766649.us-west-2.elb.amazonaws.com:8501/
 
+V2 JStor:
+http://glg-load-balancer-glg-jstor-v2-2074147660.us-west-2.elb.amazonaws.com:8501/
+
 V1 Wiki:
 http://glg-load-balancer-wiki-v1-1343157830.us-west-2.elb.amazonaws.com:8501/
 
+V2 Wiki:
+http://glg-loadbalancer-wiki-V2-1568149707.us-west-2.elb.amazonaws.com:8501/
+
 V1 BioBert:
 http://glg-load-balancer-bio-bert-v1-1743689293.us-west-2.elb.amazonaws.com:8501/
+
+
+
 
 
 

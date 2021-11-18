@@ -120,4 +120,3 @@ if text != '':
             labels=nlp.get_pipe("ner").labels,
             title='Named Entities - ' + row['name'],
             show_table=False)
-

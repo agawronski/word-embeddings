@@ -82,6 +82,48 @@ aws ecr get-login-password --region us-west-2 | docker login --username AWS --pa
 docker push 414854915400.dkr.ecr.us-west-2.amazonaws.com/glg_bio_bert_v1:latest
 
 
+### Jstor V2
+
+# make an ECR repository and get the URI
+414854915400.dkr.ecr.us-west-2.amazonaws.com/glg_jstor_v2
+
+# build the image
+sudo docker build -f Dockerfile_FULLEMBED -t 414854915400.dkr.ecr.us-west-2.amazonaws.com/glg_jstor_v2:latest .
+
+# test that the build runs
+docker run --publish 8501:8501 414854915400.dkr.ecr.us-west-2.amazonaws.com/glg_jstor_v2:latest
+
+# login
+aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 414854915400.dkr.ecr.us-west-2.amazonaws.com/glg_jstor_v2
+
+# push the image to ECR
+docker push 414854915400.dkr.ecr.us-west-2.amazonaws.com/glg_jstor_v2:latest
+
+
+
+
+### WIKI V2
+
+# make an ECR repository and get the URI
+414854915400.dkr.ecr.us-west-2.amazonaws.com/glg_wiki_v2
+
+# build the image
+sudo docker build -f Dockerfile_FULLEMBED_WIKI -t 414854915400.dkr.ecr.us-west-2.amazonaws.com/glg_wiki_v2:latest .
+
+# test that the build runs
+docker run --publish 8501:8501 414854915400.dkr.ecr.us-west-2.amazonaws.com/glg_wiki_v2:latest
+
+# login
+aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 414854915400.dkr.ecr.us-west-2.amazonaws.com/glg_wiki_v2
+
+# push the image to ECR
+docker push 414854915400.dkr.ecr.us-west-2.amazonaws.com/glg_wiki_v2:latest
+
+
+
+
+
+
 --------------------------------------------------------------------------------
 ssh -i /Users/aidangawronski/Documents/fourth_brain_capstone/fourth-brain-basic-ec2.pem ec2-user@ec2-54-186-106-158.us-west-2.compute.amazonaws.com
 

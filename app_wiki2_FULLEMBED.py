@@ -51,8 +51,6 @@ def load_data(file):
 data = load_data('https://word-emeddings.s3.us-west-2.amazonaws.com/20211112_WIKI_2_full_text_embeddings_saved_COMPLETED.csv')
 article_df = load_data('https://word-emeddings.s3.us-west-2.amazonaws.com/20211116_people_wiki_oc.csv')
 
-print(article_df.head())
-
 
 data = data.sample(n=5000, random_state=111)
 article_df = article_df.loc[data.index,:]
