@@ -47,9 +47,13 @@ def load_data(file):
     data = pd.read_csv(file)
     return data
 
+@st.cache
+def load_data2(file):
+    data = pd.read_csv(file, index_col=0)
+    return data
 
 data = load_data('https://word-emeddings.s3.us-west-2.amazonaws.com/20211112_WIKI_2_full_text_embeddings_saved_COMPLETED.csv')
-article_df = load_data('https://word-emeddings.s3.us-west-2.amazonaws.com/20211116_people_wiki_oc.csv')
+article_df = load_data2('https://word-emeddings.s3.us-west-2.amazonaws.com/20211116_people_wiki_oc.csv')
 
 
 data = data.sample(n=5000, random_state=111)
